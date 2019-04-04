@@ -1,5 +1,6 @@
 #Code by Andrew DeVoss, viewed by Michael Naguib
 import random
+import copy
 class Delinquent():
     def __init__(self, biteString):
         self.biteString = biteString
@@ -37,6 +38,7 @@ def makeBiteString(length):
         bs.append(random.randint(0,1))
     return bs
 
+
 def evolvePopulation(desiredPopulationSize, lenBiteString, population=None):
     if population is None:
         population = []
@@ -47,6 +49,7 @@ def evolvePopulation(desiredPopulationSize, lenBiteString, population=None):
     newPop = mergeSortPopulation(population, lenBiteString)
 
     return newPop
+
 
 def mergeSortPopulation(population, numCharacteristics):
     sortedPop = []*len(population)
@@ -73,7 +76,8 @@ def mergeSortPopulation(population, numCharacteristics):
 
         return sortedPop
     else:
-        return population
+        return copy.deepcopy(population)
+
 
 def main():
     # used to test mergeSortPop
