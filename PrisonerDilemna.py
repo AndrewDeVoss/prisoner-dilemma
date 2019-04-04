@@ -6,7 +6,7 @@ class Delinquent():
         self.biteString = biteString
         self.choice = biteString[len(biteString) - 1]
         self.characteristics = biteString[:(len(biteString) - 1)]
-        self.score = None
+        self.score = 0
     def getBiteString(self):
         return self.biteString
     def getChoice(self):
@@ -78,16 +78,65 @@ def mergeSortPopulation(population, numCharacteristics):
     else:
         return copy.deepcopy(population)
 
+def assignScores(partialPopulation, population):
+    # The last byte in byteString represents the delinquent's decision
+    # 1 represents cooperative
+    # 0 represents defector
+    if len(partialPopulation) == 1:
+        # should choose a random member of the whole population other than himself and compare
+        delinquent = partialPopulation[0]
+        opponent = partialPopulation[0]
+        while opponent == partialPopulation[0]:
+            opponent = population[random.randint(0, len(population))]
+        delDecision = delinquent.biteString[len(delinquent.biteString) - 1]
+        opDecision = opponent.biteString[len(opponent.biteString) - 1]
+        if delDecision == 1:
+            if opDecision == 1:
+                delinquent.score = delinquent.score + 3
+                opponent.score = opponent.score + 3
+            else:
+                delinquent.score = delinquent.score + 1
+                opponent.score = opponent.score + 4
+        else:
+            if opDecision == 0:
+                delinquent.score = delinquent.score + 2
+                opponent.score = opponent.score + 2
+            else:
+                delinquent.score = delinquent.score + 4
+                opponent.score = opponent.score + 1
+    else:
+        # compares each delinquent to the rest of the delinquents with the same characteristics
+        # (this is the partial population)
+        for delinquent in range(0, len(partialPopulation)):
+            delDecision = delinquent.biteString[len(delinquent.biteString) - 1]
+            for opponent in range(delinquent + 1, len(partialPopulation)):
+                opDecision = opponent.biteString[len(opponent.biteString) - 1]
+                if delDecision == 1:
+                    if opDecision == 1:
+                        delinquent.score = delinquent.score + 3
+                        opponent.score = opponent.score + 3
+                    else:
+                        delinquent.score = delinquent.score + 1
+                        opponent.score = opponent.score + 4
+                else:
+                    if opDecision == 0:
+                        delinquent.score = delinquent.score + 2
+                        opponent.score = opponent.score + 2
+                    else:
+                        delinquent.score = delinquent.score + 4
+                        opponent.score = opponent.score + 1
+
 
 def main():
     # used to test mergeSortPop
+    """
     population = evolvePopulation(10, 6)
     print(len(population))
     population2 = mergeSortPopulation(population, 6)
     print(len(population2))
     for i in range(0, len(population2)):
         print(population2[i])
-
+    """
     # used to test greater than method
     """
     x = Delinquent(makeBiteString(6))
