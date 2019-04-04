@@ -1,3 +1,4 @@
+#Code by Andrew DeVoss, viewed by Michael Naguib
 import random
 class Delinquent():
     def __init__(self, biteString):
