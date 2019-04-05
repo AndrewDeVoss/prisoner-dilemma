@@ -78,7 +78,7 @@ def mergeSortPopulation(population, numCharacteristics):
     else:
         return copy.deepcopy(population)
 
-def assignScores(partialPopulation, population):
+def assignScores(partialPopulation, population=None):
     # The last byte in byteString represents the delinquent's decision
     # 1 represents cooperative
     # 0 represents defector
@@ -107,9 +107,11 @@ def assignScores(partialPopulation, population):
     else:
         # compares each delinquent to the rest of the delinquents with the same characteristics
         # (this is the partial population)
-        for delinquent in range(0, len(partialPopulation)):
+        for index in range(0, len(partialPopulation)):
+            delinquent = partialPopulation[index]
             delDecision = delinquent.biteString[len(delinquent.biteString) - 1]
-            for opponent in range(delinquent + 1, len(partialPopulation)):
+            for jndex in range(index + 1, len(partialPopulation)):
+                opponent = partialPopulation[jndex]
                 opDecision = opponent.biteString[len(opponent.biteString) - 1]
                 if delDecision == 1:
                     if opDecision == 1:
@@ -128,6 +130,10 @@ def assignScores(partialPopulation, population):
 
 
 def main():
+    population = evolvePopulation(4, 2)
+    assignScores(population)
+    for i in range(0, len(population)):
+        print(population[i], population[i].getScore())
     # used to test mergeSortPop
     """
     population = evolvePopulation(10, 6)
