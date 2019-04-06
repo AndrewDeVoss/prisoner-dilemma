@@ -58,6 +58,7 @@ def evolvePopulation(desiredPopulationSize, lenBiteString, population=None):
         assignScores(newPop[left:right], newPop)
         left = right
 
+
     return newPop
 
 
@@ -105,48 +106,41 @@ def assignScores(partialPopulation, population):
         if delDecision == 1:
             if opDecision == 1:
                 delinquent.score = delinquent.score + 3
-                opponent.score = opponent.score + 3
             else:
                 delinquent.score = delinquent.score + 1
-                opponent.score = opponent.score + 4
         else:
             if opDecision == 0:
                 delinquent.score = delinquent.score + 2
-                opponent.score = opponent.score + 2
             else:
                 delinquent.score = delinquent.score + 4
-                opponent.score = opponent.score + 1
     else:
-        # compares each delinquent to the rest of the delinquents with the same characteristics
+        # compares each delinquent to the a random delinquent with the same characteristics
         # (this is the partial population)
         for index in range(0, len(partialPopulation)):
             delinquent = partialPopulation[index]
             delDecision = delinquent.biteString[len(delinquent.biteString) - 1]
-            for jndex in range(index + 1, len(partialPopulation)):
-                opponent = partialPopulation[jndex]
-                opDecision = opponent.biteString[len(opponent.biteString) - 1]
-                # delinquent.opponentList.append(opponent.biteString)
-                # opponent.opponentList.append(delinquent.biteString)
-                if delDecision == 1:
-                    if opDecision == 1:
-                        delinquent.score = delinquent.score + 3
-                        opponent.score = opponent.score + 3
-                    else:
-                        delinquent.score = delinquent.score + 1
-                        opponent.score = opponent.score + 4
+            opponent = partialPopulation[0]
+            while opponent == partialPopulation[0]:
+                opponent = population[random.randint(0, len(population) - 1)]
+            opDecision = opponent.biteString[len(opponent.biteString) - 1]
+            # delinquent.opponentList.append(opponent.biteString)
+            # opponent.opponentList.append(delinquent.biteString)
+            if delDecision == 1:
+                if opDecision == 1:
+                    delinquent.score = delinquent.score + 3
                 else:
-                    if opDecision == 0:
-                        delinquent.score = delinquent.score + 2
-                        opponent.score = opponent.score + 2
-                    else:
-                        delinquent.score = delinquent.score + 4
-                        opponent.score = opponent.score + 1
+                    delinquent.score = delinquent.score + 1
+            else:
+                if opDecision == 0:
+                    delinquent.score = delinquent.score + 2
+                else:
+                    delinquent.score = delinquent.score + 4
 
 
 def main():
     # used to fix assignScore and test the evolvePop
     """
-    population = evolvePopulation(20, 3)
+    population = evolvePopulation(7, 3)
     for delinquent in population:
         print("biteString, score, opponentList: ", delinquent.biteString, delinquent.score, delinquent.opponentList)
     """
